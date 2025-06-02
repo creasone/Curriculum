@@ -1,0 +1,124 @@
+/* Reset general */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'raleway', sans-serif;
+  background-color: #000;
+  color: #fff;
+}
+
+/* Banner fijo superior */
+.banner {
+  background-color: #000;
+  padding: 15px 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  text-align: center;
+  z-index: 1000;
+}
+
+.banner h1 {
+  font-size: 40px;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* Imagen principal */
+.hero-image img {
+  width: 100%;
+  height: auto;
+  margin-top: 80px; /* compensación del banner */
+}
+
+/* Descripción con imagen al lado */
+.descripcion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 120px;
+  gap: 40px;
+  background-color: #000;
+}
+
+.descripcion .text {
+  flex: 2;
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.descripcion .imagen-secundaria img {
+  width: 300px;
+  height: auto;
+}
+
+/* Características */
+.caracteristicas {
+  background-color: #1E1A13;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.caracteristicas h2 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+.caracteristicas-lista {
+  display: flex;
+  justify-content: center;
+  gap: 120px;
+  flex-wrap: wrap;
+}
+
+.caracteristicas-lista div {
+  text-align: center;
+}
+
+.caracteristicas-lista img {
+  width: 80px;
+  margin-bottom: 15px;
+}
+
+.caracteristicas-lista p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Galería de imágenes */
+.galeria {
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 60px 40px;
+  flex-wrap: wrap;
+}
+
+.galeria img {
+  width: 350px;
+}
+
+/* Footer */
+.footer {
+  background-color: #1E1A13;
+  padding: 30px;
+  text-align: center;
+}
+
+.footer p {
+  font-size: 16px;
+  color: #fff;
+}
+
+.footer a {
+  color: #00FFB2;
+  text-decoration: none;
+}

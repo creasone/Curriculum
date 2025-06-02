@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Científica Creasone</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+      background-color: #2c3e50;
+      gap: 30px;
+    }
+
+    .calculadora, .indicadores {
+      background: #ecf0f1;
+      padding: 20px;
+      border-radius: 10px;
+      width: 360px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .titulo {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+
+    #pantalla {
+      width: 100%;
+      height: 60px;
+      font-size: 24px;
+      text-align: right;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      background-color: #fff;
+      box-shadow: inset 0 0 3px #aaa;
+    }
+
+    .teclas {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      padding: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    button.operador {
+      background-color: #e67e22;
+    }
+
+    button.funcion {
+      background-color: #9b59b6;
+    }
+
+    button.clear {
+      background-color: #e74c3c;
+    }
+
+    .indicadores h3 {
+      margin-top: 0;
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .indicador {
+      font-size: 18px;
+      margin: 10px 0;
+      color: #34495e;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculadora">
+    <div class="titulo">Calculadora Científica - CREASONE</div>
+    <input type="text" id="pantalla" disabled>
+    <div class="teclas">
+      <button onclick="borrarTodo()" class="clear">C</button>
+      <button onclick="agregar('(')">(</button>
+      <button onclick="agregar(')')">)</button>
+      <button onclick="agregar('/')" class="operador">/</button>
+      <button onclick="agregar('*')" class="operador">*</button>
+      <button onclick="agregar('7')">7</button>
+      <button onclick="agregar('8')">8</button>
+      <button onclick="agregar('9')">9</button>
+      <button onclick="agregar('-')" class="operador">-</button>
+      <button onclick="funcion('sqrt')" class="funcion">√</button>
+      <button onclick="agregar('4')">4</button>
+      <button onclick="agregar('5')">5</button>
+      <button onclick="agregar('6')">6</button>
+      <button onclick="agregar('+')" class="operador">+</button>
+      <button onclick="funcion('pow')" class="funcion">x²</button>
+      <button onclick="agregar('1')">1</button>
+      <button onclick="agregar('2')">2</button>
+      <button onclick="agregar('3')">3</button>
+      <button onclick="agregar('.')">.</button>
+      <button onclick="funcion('percent')" class="funcion">%</button>
+      <button onclick="agregar('0')">0</button>
+      <button onclick="calcular()" style="grid-column: span 4; background-color: #27ae60">=</button>
+    </div>
+  </div>
+
+  <div class="indicadores">
+    <h3>Indicadores de Chile</h3>
+    <div id="uf" class="indicador">UF: Cargando...</div>
+    <div id="dolar" class="indicador">Dólar: Cargando...</div>
+    <div id="utm" class="indicador">UTM: Cargando...</div>
+    <div id="desempleo" class="indicador">Tasa de desempleo: Cargando...</div>
+    <div id="pib" class="indicador">PIB (USD): Cargando...</div>
+    <div id="pibpc" class="indicador">PIB per cápita: Cargando...</div>
+    <div id="poblacion" class="indicador">Población: Cargando...</div>
+    <div id="fuerza" class="indicador">Fuerzas Armadas: Cargando...</div>
+  </div>
+
+  <script>
+    function agregar(valor) {
+      document.getElementById("pantalla").value += valor;
+    }
+
+    function borrarTodo() {
+      document.getElementById("pantalla").value = "";
+    }
+
+    function calcular() {
+      try {
+        document.getElementById("pantalla").value = eval(document.getElementById("pantalla").value);
+      } catch {
+        document.getElementById("pantalla").value = "Error";
+      }
+    }
+
+    function funcion(tipo) {
+      let valor = document.getElementById("pantalla").value;
+      let resultado;
+      switch (tipo) {
+        case 'sqrt':
+          resultado = Math.sqrt(eval(valor));
+          break;
+        case 'pow':
+          resultado = Math.pow(eval(valor), 2);
+          break;
+        case 'percent':
+          resultado = eval(valor) / 100;
+          break;
+      }
+      document.getElementById("pantalla").value = resultado;
+    }
+
+    function actualizarIndicadores() {
+      fetch('https://mindicador.cl/api')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('uf').textContent = `UF: $${data.uf.valor.toLocaleString('es-CL')}`;
+          document.getElementById('dolar').textContent = `Dólar: $${data.dolar.valor.toLocaleString('es-CL')}`;
+          document.getElementById('utm').textContent = `UTM: $${data.utm.valor.toLocaleString('es-CL')}`;
+        });
+
+      fetch('https://api.api-ninjas.com/v1/country?name=chile', {
+        headers: { 'X-Api-Key': 'YOUR_API_KEY' } // Reemplaza con tu API Key de api-ninjas.com
+      })
+        .then(res => res.json())
+        .then(data => {
+          const chile = data[0];
+          document.getElementById('desempleo').textContent = `Tasa de desempleo: ${chile.unemployment}%`;
+          document.getElementById('pib').textContent = `PIB (USD): $${chile.gdp.toLocaleString()}`;
+          document.getElementById('pibpc').textContent = `PIB per cápita: $${chile.gdp_per_capita.toLocaleString()}`;
+          document.getElementById('poblacion').textContent = `Población: ${chile.population.toLocaleString()} hab.`;
+          document.getElementById('fuerza').textContent = `Fuerzas Armadas: ${chile.military_expenditure_percent_gdp}% del PIB`;
+        });
+    }
+
+    actualizarIndicadores();
+    setInterval(actualizarIndicadores, 60000);
+  </script>
+</body>
+</html>
+
